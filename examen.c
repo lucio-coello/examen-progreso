@@ -1,4 +1,3 @@
-// Examen 1 - Programación 1
 #include <stdio.h>
 #include <string.h>
 
@@ -7,73 +6,78 @@ float tiempos [5] [3];
 int i, j, k, mejorTiempo = 0, nadadorGanador = 0, competenciaGanadora = 0, resultado = 0, cantidadNadadores = 0;
 int opciones;
 int nadadorMejorTiempo = 0;
+int main() {
+    do {
+        printf("Identificador de ganadores\n");
+        printf("1. Ingresar datos de los nadadores\n");
+        printf("2. Mostrar ganadores\n");
+        printf("3. Salir\n");
+        printf(">> ");
+        scanf("%d", &opciones);
+        getchar(); 
+        switch (opciones) {
+        case 1:
+            do {
+                printf("Ingrese la cantidad de nadadores (maximo 5): ");
+                resultado = scanf("%d", &cantidadNadadores);
+                getchar(); 
 
-int main(){
- do {
-    printf("Identificador de ganadores \n");
-    printf("1. Ingresar datos de los nadadores \n");
-    printf("2. Mostrar ganadores \n");
-    printf("3. Salir \n");
-    printf(">> ");
-    scanf("%d", &opciones);
-    switch (opciones){
-    case 1:
-    do
-    {
-        printf("ingrese la cantidad de nadadores: \n");
-        cantidadNadadores = scanf("%d", &i);
-     if (cantidadNadadores != 1 || i > 5 || i < 0)
-     {
-        printf("la cantidad permitida de nadadores es 5, porfavor ingrese nuevamente los datos. \n");
-        while(getchar() != '\n');
-        cantidadNadadores = 0;
-     }else{
-        for (i = 0; i < 5; i++) 
-        {
-            printf("ingrese el nombre del nadador %d: ", i + 1);
-            scanf("%s", nombres[i]);
-            while (getchar() != '\n');
-            for (j = 0; j < 3; j++)
-            {
-                do
-                {
-                    printf("ingrese el tiempo de la competencia %d: ", j + 1);
-                    resultado = scanf("%f", &tiempos[i][j]);
-                    if ( resultado !=1 || tiempos[i][j] < 0)
-                    {
-                        printf("el tiempo no es valido\n");
-                        while(getchar() != '\n');
-                    }else{
-                        printf("tiempo guardado exitosamente\n");
-                        while(getchar() != '\n');
-                    }
-                } while (resultado != 1 || tiempos[i][j] < 0);
-            }
-        }
-     }
+                if (resultado != 1 || cantidadNadadores < 1 || cantidadNadadores > 5) {
+                    printf("Cantidad invalida. Intente nuevamente.\n");
+                    cantidadNadadores = 0;
+                }
+            } while (cantidadNadadores == 0);
 
-     case 2:
-        printf("los ganadores son: \n");
-        for (i = 0; i < 5; i++)
-        {
-            for (j = 0; j < 3; j++)
-            {
-                if (tiempos[i][j] < mejorTiempo || mejorTiempo == 0)
-                {
-                    mejorTiempo = tiempos[i][j];
-                    nadadorGanador = i + 1;
-                    competenciaGanadora = j + 1;
+            for (i = 0; i < cantidadNadadores; i++) {
+                printf("Ingrese el nombre del nadador %d: ", i + 1);
+                scanf("%19s", nombres[i]);
+                getchar();
+
+                for (j = 0; j < 3; j++) {
+                    do {
+                        printf("Ingrese el tiempo en competencia %d: ", j + 1);
+                        resultado = scanf("%f", &tiempos[i][j]);
+                        getchar(); 
+
+                        if (resultado != 1 || tiempos[i][j] < 0) {
+                            printf("Tiempo invalido. Intente de nuevo.\n");
+                        }
+                    } while (resultado != 1 || tiempos[i][j] < 0);
                 }
             }
+            break;
+
+        case 2:
+            if (cantidadNadadores == 0) {
+                printf("Primero debe ingresar los datos de los nadadores.\n");
+            } else {
+                mejorTiempo = tiempos[0][0];
+                nadadorGanador = 0;
+                competenciaGanadora = 0;
+
+                for (i = 0; i < cantidadNadadores; i++) {
+                    for (j = 0; j < 3; j++) {
+                        if (tiempos[i][j] < mejorTiempo) {
+                            mejorTiempo = tiempos[i][j];
+                            nadadorGanador = i;
+                            competenciaGanadora = j;
+                        }
+                    }
+                }
+                printf("El ganador es %s en la competencia %d con un tiempo de %.2f segundos.\n",
+                    nombres[nadadorGanador], competenciaGanadora + 1, mejorTiempo);
+            }
+            break;
+
+        case 3:
+            printf("Saliendo del programa...\n");
+            break;
+
+        default:
+            printf("Opcion invalida. Intente nuevamente.\n");
         }
-        printf("el ganador es el nadador %d en la competencia %d con un tiempo de %e segundos\n", nadadorGanador, competenciaGanadora, mejorTiempo);
-        break;
-      
+    } while (opciones != 3);
     
-    } while (i > 5 || i < 0);
-    
-    }
- } while (opciones !=3);
- 
- return 0;
+
+    return 0;
 }
